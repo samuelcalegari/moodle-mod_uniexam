@@ -1,0 +1,17 @@
+<p style="margin-top: 50px">{{# str }} userslist, uniexam {{/ str }}</p>
+<table class="table">
+    <thead class="thead-dark">
+    <tr>
+        <th scope="col">{{# str }} name, core {{/ str }}</th>
+        <th scope="col">{{# str }} email, core {{/ str }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#students}}
+    <tr>
+        <td><img src="{{ picture }}" class="userpicture defaultuserpic" width="35" height="35"><strong>{{ lastname }}, {{ firstname }}</strong></td>
+        <td><a href="mailto:{{ email }}">{{ email }}</a></td>
+    </tr>
+    {{/students}}
+    </tbody>
+</table>
