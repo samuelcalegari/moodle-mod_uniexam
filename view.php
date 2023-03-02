@@ -22,20 +22,20 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
-require_once(dirname(__FILE__).'/lib.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
+require_once(dirname(__FILE__) . '/lib.php');
 
 $id = optional_param('id', 0, PARAM_INT); // course_module ID, or.
-$n  = optional_param('n', 0, PARAM_INT);  // uniexam instance ID - it should be named as the first character of the module.
+$n = optional_param('n', 0, PARAM_INT);  // uniexam instance ID - it should be named as the first character of the module.
 
 if ($id) {
-    $cm         = get_coursemodule_from_id('uniexam', $id, 0, false, MUST_EXIST);
-    $course     = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
-    $uniexam  = $DB->get_record('uniexam', array('id' => $cm->instance), '*', MUST_EXIST);
+    $cm = get_coursemodule_from_id('uniexam', $id, 0, false, MUST_EXIST);
+    $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
+    $uniexam = $DB->get_record('uniexam', array('id' => $cm->instance), '*', MUST_EXIST);
 } else if ($n) {
     $uniexam = $DB->get_record('uniexam', array('id' => $n), '*', MUST_EXIST);
-    $course     = $DB->get_record('course', array('id' => $uniexam->course), '*', MUST_EXIST);
-    $cm         = get_coursemodule_from_instance('uniexam', $uniexam->id, $course->id, false, MUST_EXIST);
+    $course = $DB->get_record('course', array('id' => $uniexam->course), '*', MUST_EXIST);
+    $cm = get_coursemodule_from_instance('uniexam', $uniexam->id, $course->id, false, MUST_EXIST);
 } else {
     error('You must specify a course_module ID or an instance ID');
 }
@@ -69,9 +69,9 @@ echo $renderer->render($renderable);
 echo "<form method=\"post\" action=\"save.php\" id=\"surveyform\">";
 echo '<div>';
 echo "<input type=\"hidden\" name=\"id\" value=\"$id\" />";
-echo "<input type=\"hidden\" name=\"sesskey\" value=\"".sesskey()."\" />";
+echo "<input type=\"hidden\" name=\"sesskey\" value=\"" . sesskey() . "\" />";
 echo '<br />';
-echo '<input type="submit" class="btn btn-primary" value="'. get_string('generatesession','uniexam'). '" />';
+echo '<input type="submit" class="btn btn-primary" value="' . get_string('generatesession', 'uniexam') . '" />';
 echo '</div>';
 echo "</form>";
 

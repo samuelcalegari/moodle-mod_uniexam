@@ -38,20 +38,20 @@ if (!$formdata = data_submitted() or !confirm_sesskey()) {
 
 $id = required_param('id', PARAM_INT);    // Course Module ID
 
-if (! $cm = get_coursemodule_from_id('uniexam', $id)) {
+if (!$cm = get_coursemodule_from_id('uniexam', $id)) {
     throw new \moodle_exception('invalidcoursemodule');
 }
 
-if (! $course = $DB->get_record("course", array("id"=>$cm->course))) {
+if (!$course = $DB->get_record("course", array("id" => $cm->course))) {
     throw new \moodle_exception('coursemisconf');
 }
 
-$PAGE->set_url('/mod/uniexam/save.php', array('id'=>$id));
+$PAGE->set_url('/mod/uniexam/save.php', array('id' => $id));
 require_login($course, false, $cm);
 
 $context = context_module::instance($cm->id);
 
-if (! $uniexam = $DB->get_record("uniexam", array("id"=>$cm->instance))) {
+if (!$uniexam = $DB->get_record("uniexam", array("id" => $cm->instance))) {
     throw new \moodle_exception('invaliduniexamid', 'uniexam');
 }
 
@@ -63,38 +63,38 @@ $users = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports
 $role = $DB->get_record('role', array('shortname' => 'editingteacher'));
 $teachers = get_role_users($role->id, $coursecontext);
 
-if($uniexam->sessionid==0) {
+if ($uniexam->sessionid == 0) {
     // Session Creation
     $token = get_token();
-    if($token!=NULL) {
+    if ($token != NULL) {
         $sessionid = create_session($uniexam, $token);
-        if($sessionid > 0) {
-            $msg.= "✔️ Session created ($sessionid)<br>";
+        if ($sessionid > 0) {
+            $msg .= get_string('sessioncreated', 'uniexam', $sessionid) . "<br>";
             $roomid = 1;
 
             // Room Association
-            if(room_association($sessionid, $roomid,  $token)) {
-                $msg.= "✔️ Room ($roomid) associated to session ($sessionid) !<br>";
+            if (room_association($sessionid, $roomid, $token)) {
+                $msg .= get_string('roomassociated', 'uniexam', ['room' => $roomid, 'session' => $sessionid]) . "<br>";
 
                 // Add Users
-                foreach( $teachers as $teacher ) {
+                foreach ($teachers as $teacher) {
                     $uid = get_ldap_user_id($teacher->username);
-                    if(isset($uid)) {
+                    if (isset($uid)) {
                         if (user_association($sessionid, $uid, $teacher->lastname, 1, $token)) {
-                            $msg.= "✔️ 👩‍🏫 User ($uid, $teacher->username) associated to session ($sessionid) !<br>";
+                            $msg .= get_string('userassociated1', 'uniexam', ['user' => $uid . ", " . $teacher->username, 'session' => $sessionid]) . "<br>";
                         } else {
-                            $msg.= "❌ Unable to associate User ($uid, $teacher->username) to session ($sessionid) ...<br>";
+                            $msg .= get_string('userassociationerr', 'uniexam', ['user' => $uid . ", " . $teacher->username, 'session' => $sessionid]) . "<br>";
                         }
                     }
                 }
 
-                foreach( $users as $user ) {
+                foreach ($users as $user) {
                     $uid = get_ldap_user_id($user->username);
-                    if(isset($uid)) {
+                    if (isset($uid)) {
                         if (user_association($sessionid, $uid, $user->lastname, 0, $token)) {
-                            $msg.= "✔️ 👨‍🎓 User ($uid, $user->username) associated to session ($sessionid) !<br>";
+                            $msg .= get_string('userassociated2', 'uniexam', ['user' => $uid . ", " . $user->username, 'session' => $sessionid]) . "<br>";
                         } else {
-                            $msg.= "❌ Unable to associate User ($uid, $user->username) to session ($sessionid) ...<br>";
+                            $msg .= get_string('userassociationerr', 'uniexam', ['user' => $uid . ", " . $user->username, 'session' => $sessionid]) . "<br>";
                         }
                     }
                 }
@@ -102,34 +102,34 @@ if($uniexam->sessionid==0) {
                 $uniexam->sessionid = $sessionid;
                 $DB->update_record('uniexam', $uniexam);
             } else {
-                $msg .= "❌ Unable to associate room to session on UniExam Services ...<br>";
+                $msg .= get_string('roomassociationerr', 'uniexam') . "<br>";
             }
         } else {
-            $msg .= "❌ Unable to create session on UniExam Services ...<br>";
+            $msg .= get_string('sessioncreationerr', 'uniexam') . "<br>";
         }
     } else {
-        $msg .= "❌ Unable to connect UniExam Services ...<br>";
+        $msg .= get_string('cnxerr', 'uniexam') . "<br>";
     }
 } else {
     $token = get_token();
-    if($token!=NULL) {
+    if ($token != NULL) {
         $sessionid = $uniexam->sessionid;
 
         // Update Session
         create_session($uniexam, $token, $uniexam->sessionid);
 
         $usersUniExam = array();
-        if(user_list($uniexam->sessionid,$token,$usersUniExam)) {
-            foreach( $users as $user ) {
+        if (user_list($uniexam->sessionid, $token, $usersUniExam)) {
+            foreach ($users as $user) {
                 $uid = get_ldap_user_id($user->username);
-                if(isset($uid)) {
+                if (isset($uid)) {
 
                     // Not exits yet =>  add
-                    if (!in_array($uid,$usersUniExam)) {
+                    if (!in_array($uid, $usersUniExam)) {
                         if (user_association($sessionid, $uid, $user->lastname, 0, $token)) {
-                            $msg.= "✔️ 👨‍🎓 User ($uid, $user->username) associated to session ($sessionid) !<br>";
+                            $msg .= get_string('userassociated2', 'uniexam', ['user' => $uid . ", " . $user->username, 'session' => $sessionid]) . "<br>";
                         } else {
-                            $msg.= "❌ Unable to associate User ($uid, $user->username) to session ($sessionid) ...<br>";
+                            $msg .= get_string('userassociationerr', 'uniexam', ['user' => $uid . ", " . $user->username, 'session' => $sessionid]) . "<br>";
                         }
                     }
                     // Remove from process
@@ -140,27 +140,27 @@ if($uniexam->sessionid==0) {
                 }
             }
             // Remove users existing in Uniexam and not present in Moodle course
-            foreach( $usersUniExam as $userUniExam ) {
+            foreach ($usersUniExam as $userUniExam) {
                 if (user_dissociation($sessionid, $userUniExam, $token)) {
-                    $msg .= "✔️ 👨‍🎓 User ($userUniExam) removed from session ($sessionid) !<br>";
+                    $msg .= get_string('userremoved2', 'uniexam', ['user' => $userUniExam, 'session' => $sessionid]) . "<br>";
                 } else {
-                    $msg .= "❌ Unable to remove User ($userUniExam) from session ($sessionid) !<br>";
+                    $msg .= get_string('userremoveerr', 'uniexam', ['user' => $userUniExam, 'session' => $sessionid]) . "<br>";
                 }
             }
 
         } else {
-            $msg .= "❌ Unable to retrieve users list from UniExam Services ...<br>";
+            $msg .= get_string('listerr', 'uniexam') . "<br>";
         }
-    }  else {
-        $msg .= "❌ Unable to connect UniExam Services ...<br>";
+    } else {
+        $msg .= get_string('cnxerr', 'uniexam') . "<br>";
     }
 }
 
 
-$PAGE->set_title(get_string("createupdatesession","uniexam"));
+$PAGE->set_title(get_string("createupdatesession", "uniexam"));
 $PAGE->set_heading($course->fullname);
 echo $OUTPUT->header();
 echo $OUTPUT->heading(format_string($uniexam->name));
-echo ($msg);
-notice(get_string("processended","uniexam"), "$CFG->wwwroot/course/view.php?id=$course->id");
+echo($msg);
+notice(get_string("processended", "uniexam"), "$CFG->wwwroot/course/view.php?id=$course->id");
 exit;
