@@ -2,7 +2,7 @@
 
 ## Current version ##
 
-1.0
+1.1
 
 ## Features ##
 

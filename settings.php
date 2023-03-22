@@ -21,4 +21,7 @@ if ($ADMIN->fulltree) {
 
     $settings->add( new admin_setting_configpasswordunmask('uniexam/apipwd', get_string('apipwd', 'uniexam'),
         get_string('configapipwd', 'uniexam'), ''));
+
+    $settings->add(new admin_setting_configtext('uniexam/panelurl', get_string('panelurl', 'uniexam'),
+        get_string('configpanelurl', 'uniexam'), '', PARAM_URL));
 }

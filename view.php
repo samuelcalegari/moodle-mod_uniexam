@@ -67,13 +67,15 @@ $renderable = new \mod_uniexam\uniexam($uniexam);
 echo $renderer->render($renderable);
 
 echo "<form method=\"post\" action=\"save.php\" id=\"surveyform\">";
-echo '<div>';
+echo "<div>";
 echo "<input type=\"hidden\" name=\"id\" value=\"$id\" />";
 echo "<input type=\"hidden\" name=\"sesskey\" value=\"" . sesskey() . "\" />";
-echo '<br />';
-echo '<input type="submit" class="btn btn-primary" value="' . get_string('generatesession', 'uniexam') . '" />';
-echo '</div>';
+echo "<br />";
+echo "<input type=\"submit\" class=\"btn btn-primary\" value=\"" . get_string('generatesession', 'uniexam') . "\" />";
+echo "</div>";
 echo "</form>";
+echo "<br />";
+echo "<a href=\"" . get_config('uniexam', 'panelurl') ."\" target=\"_blank\" class=\"btn btn-primary\">" . get_string('linkpanel', 'uniexam') . "</a>";
 
 // Finish the page.
 echo $OUTPUT->footer();

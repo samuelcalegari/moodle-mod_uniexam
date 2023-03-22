@@ -24,13 +24,13 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['modulename'] = 'UniExam';
-$string['modulenameplural'] = 'UniExam';
+$string['modulename'] = 'Session Examen  (bêta)';
+$string['modulenameplural'] = 'Session Examen  (bêta)';
 
 $string['uniexam'] = 'UniExam';
-$string['uniexam:addinstance'] = 'Add a new UniExam';
-$string['pluginadministration'] = 'UniExam Administration';
-$string['pluginname'] = 'UniExam';
+$string['uniexam:addinstance'] = 'Add a new Session Examen';
+$string['pluginadministration'] = 'Session Examen Administration';
+$string['pluginname'] = 'Session Examen (bêta)';
 
 $string['uniexamname'] = 'Name';
 $string['uniexamname_help'] = 'Name';
@@ -40,6 +40,8 @@ $string['apiuser'] = 'User';
 $string['configapiuser'] = 'User';
 $string['apipwd'] = 'Password';
 $string['configapipwd'] = 'Password';
+$string['panelurl'] = 'URL UniExam Manager Interface';
+$string['configpanelurl'] = 'URL UniExam Manager Interface';
 $string['open'] = 'Start at';
 $string['close'] = 'Close at';
 $string['sessionid'] = 'Id Session';
@@ -51,6 +53,7 @@ $string['testtype_help'] = 'Values: Exam';
 $string['testkind'] = 'Kind of Test';
 $string['testkind_help'] = 'Values: Oral, Written';
 $string['generatesession'] = 'Create or Update UniExam Session';
+$string['linkpanel'] = 'Managing interface';
 $string['createupdatesession'] = 'Session Create/Update';
 $string['processended'] = '👌 The process has ended';
 $string['invaliduniexamid'] = 'UniExam ID was incorrect';
