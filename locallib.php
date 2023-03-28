@@ -66,7 +66,9 @@ function create_session(object $uniexam, string $token, int $sessionid = 0)
             'idTypeSession' => 3, // Correspond à examen
             'diplome' => $uniexam->degree,
             'typeEpreuve' => $uniexam->testtype,
-            'natureEpreuve' => $uniexam->testkind
+            'natureEpreuve' => $uniexam->testkind,
+            'certificatMedical' => 0,
+            'NbLimitePlace' => 0
         );
 
         $response = $soapclient->ajouterModifierSession($param);
@@ -124,7 +126,9 @@ function user_association(int $sessionid, string $uid, string $lastname, int $re
             'idSession' => $sessionid,
             'numeroPersonne' => $uid,
             'nom' => $lastname,
-            'responsable' => $resp
+            'responsable' => $resp,
+            'doitSigner' => 0,
+            'numeroPlace' => 0
         );
         $response = $soapclient->ajouterParticipantSession($param);
         $code = $response->ajouterParticipantSessionResult->codeResultat;

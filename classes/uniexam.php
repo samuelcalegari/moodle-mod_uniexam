@@ -24,6 +24,7 @@
 
 namespace mod_uniexam;
 
+use IntlDateFormatter;
 use renderable;
 use renderer_base;
 use templatable;
@@ -105,6 +106,10 @@ class uniexam implements renderable, templatable {
      * @return stdClass
      */
     public function export_for_template(renderer_base $output) {
+
+        $fmt = new IntlDateFormatter('fr_FR', IntlDateFormatter::NONE, IntlDateFormatter::NONE);
+        $fmt->setPattern('H:m (EEEE dd MMMM YYYY)');
+        $data['description'] = "🕒 ".$fmt->format($this->timeopen)." ➡️ ".$fmt->format($this->timeclose);
 
         $coursecontext = context_course::instance($this->course);
         $users = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
