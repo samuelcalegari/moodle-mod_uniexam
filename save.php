@@ -161,6 +161,6 @@ $PAGE->set_title(get_string("createupdatesession", "uniexam"));
 $PAGE->set_heading($course->fullname);
 echo $OUTPUT->header();
 echo $OUTPUT->heading(format_string($uniexam->name));
-echo($msg);
+echo("<br>".$msg);
 notice(get_string("processended", "uniexam"), "$CFG->wwwroot/course/view.php?id=$course->id");
 exit;
