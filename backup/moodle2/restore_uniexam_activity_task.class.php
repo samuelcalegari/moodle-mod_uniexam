@@ -66,8 +66,8 @@ class restore_uniexam_activity_task extends restore_activity_task {
     static public function define_decode_rules() {
         $rules = array();
 
-        $rules[] = new restore_decode_rule('uniexamVIEWBYID', '/mod/uniexam/view.php?id=$1', 'course_module');
-        $rules[] = new restore_decode_rule('uniexamINDEX', '/mod/uniexam/index.php?id=$1', 'course');
+        $rules[] = new restore_decode_rule('UNIEXAMVIEWBYID', '/mod/uniexam/view.php?id=$1', 'course_module');
+        $rules[] = new restore_decode_rule('UNIEXAMINDEX', '/mod/uniexam/index.php?id=$1', 'course');
 
         return $rules;
 
